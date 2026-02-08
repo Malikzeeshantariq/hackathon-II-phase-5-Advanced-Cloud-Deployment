@@ -1,0 +1,56 @@
+{{/*
+[Task]: T025
+[From]: specs/002-advanced-features-dapr/tasks.md
+[Description]: Helm template helpers for notification-service
+*/}}
+
+{{/*
+Expand the name of the chart.
+*/}}
+{{- define "notification-service.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+*/}}
+{{- define "notification-service.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "notification-service.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "notification-service.labels" -}}
+helm.sh/chart: {{ include "notification-service.chart" . }}
+{{ include "notification-service.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "notification-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "notification-service.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app: notification-service
+{{- end }}

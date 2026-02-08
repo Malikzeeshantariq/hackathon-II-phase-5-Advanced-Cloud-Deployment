@@ -1,0 +1,90 @@
+# Kubernetes Service Template
+# Replace placeholders: {{APP_NAME}}, {{PORT}}, {{NAMESPACE}}
+# Choose appropriate service type based on exposure requirements
+
+---
+# ClusterIP Service (internal only)
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{APP_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{APP_NAME}}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{APP_NAME}}
+  ports:
+  - name: http
+    port: 80
+    targetPort: {{PORT}}
+    protocol: TCP
+
+---
+# NodePort Service (development/testing)
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{APP_NAME}}-nodeport
+#   namespace: {{NAMESPACE}}
+# spec:
+#   type: NodePort
+#   selector:
+#     app: {{APP_NAME}}
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: {{PORT}}
+#     nodePort: 30080  # Optional: omit for auto-assignment
+
+---
+# LoadBalancer Service (cloud production)
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{APP_NAME}}-lb
+#   namespace: {{NAMESPACE}}
+#   annotations:
+#     # AWS NLB
+#     # service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#     # GCP
+#     # cloud.google.com/load-balancer-type: "External"
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: {{APP_NAME}}
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: {{PORT}}
+
+---
+# Ingress (HTTP/HTTPS routing)
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: {{APP_NAME}}-ingress
+#   namespace: {{NAMESPACE}}
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+#     # For TLS with cert-manager
+#     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+# spec:
+#   ingressClassName: nginx
+#   # TLS configuration
+#   # tls:
+#   # - hosts:
+#   #   - {{APP_NAME}}.example.com
+#   #   secretName: {{APP_NAME}}-tls
+#   rules:
+#   - host: {{APP_NAME}}.example.com
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: {{APP_NAME}}
+#             port:
+#               number: 80

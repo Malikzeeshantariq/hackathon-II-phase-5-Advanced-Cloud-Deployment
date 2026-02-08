@@ -1,0 +1,71 @@
+# T4-07: Frontend Helm Values
+# Spec Reference: spec.md FR-2.4, FR-2.5, FR-5.1
+# Plan Reference: plan.md Section 1.2, contracts/frontend-values.yaml
+
+# Number of pod replicas (FR-2.5: configurable)
+replicaCount: 1
+
+# Container image configuration
+image:
+  repository: todo-frontend
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Kubernetes Service configuration
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30000
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Environment variables
+# WARNING: Sensitive values MUST be provided via --set or -f secrets.yaml
+env:
+  # Required: JWT signing secret (must match backend)
+  BETTER_AUTH_SECRET: ""
+  # Required: Neon PostgreSQL connection string (for Better Auth)
+  DATABASE_URL: ""
+  # Additional trusted origins for Better Auth (comma-separated)
+  # Set this to the Minikube access URL(s) for local development
+  ADDITIONAL_TRUSTED_ORIGINS: ""
+
+# Health check configuration
+healthCheck:
+  livenessPath: /
+  readinessPath: /
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Pod security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+# Node selector (optional)
+nodeSelector: {}
+
+# Tolerations (optional)
+tolerations: []
+
+# Affinity (optional)
+affinity: {}
+
+# Dapr sidecar configuration (frontend doesn't use Dapr but needs sidecar resource config)
+dapr:
+  enabled: false
+  appId: "todo-frontend"
+  appPort: 3000
+  enableApiLogging: false
+  sidecar:
+    cpuLimit: "100m"
+    memoryLimit: "128Mi"

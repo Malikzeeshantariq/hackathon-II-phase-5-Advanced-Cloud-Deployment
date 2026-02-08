@@ -1,0 +1,11 @@
+# T025: Kubernetes ConfigMap for audit-service
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "audit-service.fullname" . }}-config
+  labels:
+    {{- include "audit-service.labels" . | nindent 4 }}
+data:
+  # Add non-sensitive configuration here if needed
+  app-id: {{ .Values.dapr.appId | quote }}

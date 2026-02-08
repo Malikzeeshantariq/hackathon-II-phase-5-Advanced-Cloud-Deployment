@@ -1,0 +1,19 @@
+# T011: OKE Free Tier cloud overrides for todo-frontend
+# Spec Reference: contracts/helm-values-schema.md — values-cloud.yaml
+
+image:
+  repository: ${OCI_REGION}.ocir.io/${OCIR_NAMESPACE}/todo-frontend
+  tag: ${IMAGE_TAG}
+  pullPolicy: Always
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 300m
+    memory: 384Mi
+
+service:
+  type: LoadBalancer
+  port: 3000

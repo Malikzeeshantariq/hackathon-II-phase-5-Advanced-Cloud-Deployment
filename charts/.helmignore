@@ -1,0 +1,46 @@
+# T4-01: Helm Charts Ignore File
+# Spec Reference: spec.md FR-2, plan.md Section 6
+
+# Common VCS dirs
+.git/
+.gitignore
+.bzr/
+.bzrignore
+.hg/
+.hgignore
+.svn/
+
+# Common backup files
+*.swp
+*.bak
+*.tmp
+*.orig
+*~
+
+# IDE
+.vscode/
+.idea/
+.project
+.settings/
+
+# Editor configs
+.editorconfig
+
+# Test/development files
+*.test.yaml
+*.test.yml
+
+# Documentation (keep Chart.yaml though)
+*.md
+!Chart.yaml
+
+# CI/CD configs
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# Secrets (never package)
+secrets/
+*.secret.yaml
+*.secret.yml

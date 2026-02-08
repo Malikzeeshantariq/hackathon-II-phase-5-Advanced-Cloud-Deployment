@@ -1,0 +1,17 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: default
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    - name: brokers
+      value: "redpanda.default.svc.cluster.local:9093"
+    - name: consumerGroup
+      value: "{app-id}-group"
+    - name: authType
+      value: "none"
+    - name: initialOffset
+      value: "oldest"

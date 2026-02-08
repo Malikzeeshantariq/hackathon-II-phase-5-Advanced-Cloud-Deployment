@@ -1,0 +1,77 @@
+# Backend Helm Values Contract
+# Feature: 001-k8s-helm-deployment
+# Date: 2026-02-03
+#
+# This file defines the configuration contract for the todo-backend Helm chart.
+# DO NOT include actual secrets here. Use --set or a separate untracked file.
+
+# Number of pod replicas
+replicaCount: 1
+
+# Container image configuration
+image:
+  repository: todo-backend
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Kubernetes Service configuration
+service:
+  type: ClusterIP
+  port: 8000
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Environment variables
+# WARNING: Sensitive values MUST be provided via --set or external secrets
+env:
+  # Required: Neon PostgreSQL connection string
+  # Format: postgresql://user:password@host/database?sslmode=require
+  DATABASE_URL: ""
+
+  # Required: JWT signing secret (32+ characters)
+  # Generate with: openssl rand -hex 32
+  BETTER_AUTH_SECRET: ""
+
+  # CORS allowed origins (default: frontend service URL)
+  CORS_ORIGINS: "http://todo-frontend:3000"
+
+# Health check configuration
+healthCheck:
+  # Liveness probe path
+  livenessPath: /health
+  # Readiness probe path
+  readinessPath: /health
+  # Initial delay before probes start
+  initialDelaySeconds: 10
+  # Probe interval
+  periodSeconds: 10
+  # Timeout for each probe
+  timeoutSeconds: 5
+  # Failure threshold before restart
+  failureThreshold: 3
+
+# Pod security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65534  # nobody user
+
+# Service account (optional)
+serviceAccount:
+  create: false
+  name: ""
+
+# Node selector (optional)
+nodeSelector: {}
+
+# Tolerations (optional)
+tolerations: []
+
+# Affinity (optional)
+affinity: {}

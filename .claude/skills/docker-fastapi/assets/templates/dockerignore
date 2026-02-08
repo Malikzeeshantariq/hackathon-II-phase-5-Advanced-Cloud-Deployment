@@ -1,0 +1,67 @@
+# =============================================================================
+# .dockerignore - Exclude from Docker build context
+# =============================================================================
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Python
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov/
+.tox
+.nox
+
+# Type checking
+.mypy_cache
+.pytype
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Secrets
+*.pem
+*.key
+secrets/
+credentials/
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Tests (optional - uncomment if not needed in image)
+# tests/
+# *_test.py
+# test_*.py
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log

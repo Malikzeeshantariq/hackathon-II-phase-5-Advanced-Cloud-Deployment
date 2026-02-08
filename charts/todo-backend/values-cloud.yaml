@@ -1,0 +1,24 @@
+# T010: OKE Free Tier cloud overrides for todo-backend
+# Spec Reference: contracts/helm-values-schema.md — values-cloud.yaml
+# Only changed values; inherits defaults from values.yaml
+
+image:
+  repository: ${OCI_REGION}.ocir.io/${OCIR_NAMESPACE}/todo-backend
+  tag: ${IMAGE_TAG}
+  pullPolicy: Always
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 300m
+    memory: 384Mi
+
+dapr:
+  sidecar:
+    cpuLimit: "100m"
+    memoryLimit: "128Mi"
+
+env:
+  CORS_ORIGINS: "*"

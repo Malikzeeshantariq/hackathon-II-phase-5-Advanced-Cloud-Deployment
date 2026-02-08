@@ -1,0 +1,19 @@
+# T4-07: Frontend Helm Chart Metadata
+# Spec Reference: spec.md FR-2.1, FR-2.2, FR-2.3
+# Plan Reference: plan.md Section 6
+
+apiVersion: v2
+name: todo-frontend
+description: Next.js frontend for Todo AI Chatbot (Phase 4)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+keywords:
+  - nextjs
+  - frontend
+  - todo
+  - chatbot
+
+maintainers:
+  - name: Phase 4 Infrastructure Team

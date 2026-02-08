@@ -1,0 +1,70 @@
+# Kubernetes Configuration Templates
+# Replace placeholders: {{APP_NAME}}, {{NAMESPACE}}
+
+---
+# ConfigMap for non-sensitive configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{APP_NAME}}-config
+  namespace: {{NAMESPACE}}
+data:
+  # Key-value pairs
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+
+  # Configuration file
+  config.yaml: |
+    server:
+      port: 8080
+      host: 0.0.0.0
+    logging:
+      level: info
+      format: json
+
+---
+# Secret for sensitive data
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{APP_NAME}}-secrets
+  namespace: {{NAMESPACE}}
+type: Opaque
+stringData:
+  # Plain text (auto base64 encoded)
+  DATABASE_URL: "postgresql://user:password@host:5432/db"
+  API_KEY: "your-api-key-here"
+
+# Alternative: pre-encoded values
+# data:
+#   DATABASE_URL: cG9zdGdyZXNxbDovL3VzZXI6cGFzc3dvcmRAaG9zdDo1NDMyL2Ri
+
+---
+# TLS Secret (for HTTPS)
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: {{APP_NAME}}-tls
+#   namespace: {{NAMESPACE}}
+# type: kubernetes.io/tls
+# data:
+#   tls.crt: <base64-encoded-certificate>
+#   tls.key: <base64-encoded-private-key>
+
+---
+# Docker Registry Secret
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: registry-credentials
+#   namespace: {{NAMESPACE}}
+# type: kubernetes.io/dockerconfigjson
+# data:
+#   .dockerconfigjson: <base64-encoded-docker-config>
+
+# Create with kubectl:
+# kubectl create secret docker-registry registry-credentials \
+#   --docker-server=registry.example.com \
+#   --docker-username=user \
+#   --docker-password=pass \
+#   -n {{NAMESPACE}}

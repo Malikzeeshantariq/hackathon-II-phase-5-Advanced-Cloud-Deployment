@@ -1,0 +1,8 @@
+{
+  "name": "todo-app-monorepo",
+  "private": true,
+  "workspaces": ["frontend"],
+  "dependencies": {
+    "next": "^16.0.0"
+  }
+}

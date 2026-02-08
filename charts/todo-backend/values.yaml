@@ -1,0 +1,73 @@
+# T4-06: Backend Helm Values
+# Spec Reference: spec.md FR-2.4, FR-2.5, FR-5.1
+# Plan Reference: plan.md Section 1.2, contracts/backend-values.yaml
+
+# Number of pod replicas (FR-2.5: configurable)
+replicaCount: 1
+
+# Container image configuration
+image:
+  repository: todo-backend
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Kubernetes Service configuration
+service:
+  type: ClusterIP
+  port: 8000
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Environment variables
+# WARNING: Sensitive values MUST be provided via --set or -f secrets.yaml
+env:
+  # Required: Neon PostgreSQL connection string
+  DATABASE_URL: ""
+  # Required: JWT signing secret (32+ characters)
+  BETTER_AUTH_SECRET: ""
+  # CORS allowed origins
+  CORS_ORIGINS: "http://todo-frontend:3000"
+  # Optional: OpenAI API key for chat functionality
+  OPENAI_API_KEY: ""
+  # Better Auth URL for JWKS endpoint (frontend service in K8s)
+  BETTER_AUTH_URL: "http://todo-frontend:3000"
+
+# Health check configuration
+healthCheck:
+  livenessPath: /health
+  readinessPath: /readyz
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Pod security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+# Dapr sidecar configuration
+dapr:
+  enabled: true
+  appId: "todo-backend"
+  appPort: 8000
+  enableApiLogging: true
+  sidecar:
+    cpuLimit: "200m"
+    memoryLimit: "256Mi"
+
+# Node selector (optional)
+nodeSelector: {}
+
+# Tolerations (optional)
+tolerations: []
+
+# Affinity (optional)
+affinity: {}

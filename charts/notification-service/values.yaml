@@ -1,0 +1,63 @@
+# T025: Helm values for notification-service
+
+# Number of pod replicas
+replicaCount: 1
+
+# Container image configuration
+image:
+  repository: notification-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Kubernetes Service configuration
+service:
+  type: ClusterIP
+  port: 8001
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+# Environment variables
+# WARNING: Sensitive values MUST be provided via --set or -f secrets.yaml
+env:
+  # Required: Neon PostgreSQL connection string
+  DATABASE_URL: ""
+
+# Health check configuration
+healthCheck:
+  livenessPath: /health
+  readinessPath: /readyz
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Pod security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+# Dapr sidecar configuration
+dapr:
+  enabled: true
+  appId: "notification-service"
+  appPort: 8001
+  enableApiLogging: true
+  sidecar:
+    cpuLimit: "100m"
+    memoryLimit: "128Mi"
+
+# Node selector (optional)
+nodeSelector: {}
+
+# Tolerations (optional)
+tolerations: []
+
+# Affinity (optional)
+affinity: {}

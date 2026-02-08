@@ -1,0 +1,11 @@
+# T025: Kubernetes ConfigMap for recurring-service
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "recurring-service.fullname" . }}-config
+  labels:
+    {{- include "recurring-service.labels" . | nindent 4 }}
+data:
+  # Add non-sensitive configuration here if needed
+  app-id: {{ .Values.dapr.appId | quote }}

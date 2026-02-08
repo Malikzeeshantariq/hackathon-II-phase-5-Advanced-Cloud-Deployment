@@ -1,0 +1,17 @@
+# T025: Helm chart metadata for notification-service
+
+apiVersion: v2
+name: notification-service
+description: Notification service for Todo AI Chatbot event-driven architecture
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+keywords:
+  - notification
+  - dapr
+  - event-driven
+  - todo
+
+maintainers:
+  - name: Phase 5 Infrastructure Team

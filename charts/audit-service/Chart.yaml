@@ -1,0 +1,17 @@
+# T025: Helm chart metadata for audit-service
+
+apiVersion: v2
+name: audit-service
+description: Audit logging service for Todo AI Chatbot event-driven architecture
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+keywords:
+  - audit
+  - dapr
+  - event-driven
+  - todo
+
+maintainers:
+  - name: Phase 5 Infrastructure Team

@@ -1,0 +1,21 @@
+# T003: Cloud Dapr Pub/Sub component using PostgreSQL
+# Spec Reference: specs/003-dapr-k8s-deployment/contracts/helm-values-schema.md
+# Plan Reference: plan.md - Dapr Component Strategy
+#
+# Uses pubsub.postgresql backed by Neon PostgreSQL for OKE free tier.
+# Component name MUST be "pubsub" (same as local) so application code
+# references the same component regardless of environment.
+
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: default
+spec:
+  type: pubsub.postgresql
+  version: v1
+  metadata:
+    - name: connectionString
+      secretKeyRef:
+        name: dapr-secrets
+        key: database-url
