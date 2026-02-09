@@ -69,35 +69,42 @@ jobs:
           helm upgrade --install todo-backend charts/todo-backend/ \
             -f charts/todo-backend/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/todo-backend \
-            --set image.tag=${{ steps.tag.outputs.tag }}
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}"
 
       - name: Deploy notification service
         run: |
           helm upgrade --install notification-service charts/notification-service/ \
             -f charts/notification-service/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/notification-service \
-            --set image.tag=${{ steps.tag.outputs.tag }}
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}"
 
       - name: Deploy recurring service
         run: |
           helm upgrade --install recurring-service charts/recurring-service/ \
             -f charts/recurring-service/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/recurring-service \
-            --set image.tag=${{ steps.tag.outputs.tag }}
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}"
 
       - name: Deploy audit service
         run: |
           helm upgrade --install audit-service charts/audit-service/ \
             -f charts/audit-service/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/audit-service \
-            --set image.tag=${{ steps.tag.outputs.tag }}
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}"
 
       - name: Deploy frontend
         run: |
           helm upgrade --install todo-frontend charts/todo-frontend/ \
             -f charts/todo-frontend/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/todo-frontend \
-            --set image.tag=${{ steps.tag.outputs.tag }}
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}"
 
       - name: Wait for rollouts
         run: |

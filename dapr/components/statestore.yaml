@@ -4,10 +4,6 @@ metadata:
   name: statestore
   namespace: default
 spec:
-  type: state.postgresql
+  type: state.in-memory
   version: v1
-  metadata:
-    - name: connectionString
-      secretKeyRef:
-        name: dapr-secrets
-        key: database-url
+  metadata: []

@@ -12,10 +12,6 @@ metadata:
   name: pubsub
   namespace: default
 spec:
-  type: pubsub.postgresql
+  type: pubsub.in-memory
   version: v1
-  metadata:
-    - name: connectionString
-      secretKeyRef:
-        name: dapr-secrets
-        key: database-url
+  metadata: []
