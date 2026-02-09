@@ -71,7 +71,8 @@ jobs:
             --set image.repository=${{ env.REGISTRY }}/todo-backend \
             --set image.tag=${{ steps.tag.outputs.tag }} \
             --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}"
+            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" \
+            --set env.OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
 
       - name: Deploy notification service
         run: |
