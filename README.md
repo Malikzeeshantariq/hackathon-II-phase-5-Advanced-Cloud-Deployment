@@ -161,18 +161,6 @@ Push to `main` triggers the full pipeline:
 1. **Build** — Builds multi-arch Docker images for all 5 services, pushes to ACR
 2. **Deploy** — Applies Dapr components, creates K8s secrets, deploys via Helm, verifies rollout
 
-### GitHub Secrets Required
-
-| Secret | Description |
-|--------|-------------|
-| `AZURE_CREDENTIALS` | Service principal JSON for Azure login |
-| `ACR_NAME` | Azure Container Registry name |
-| `AKS_RESOURCE_GROUP` | AKS resource group name |
-| `AKS_CLUSTER_NAME` | AKS cluster name |
-| `DATABASE_URL` | Neon PostgreSQL connection string |
-| `BETTER_AUTH_SECRET` | JWT signing secret |
-| `OPENAI_API_KEY` | OpenAI API key for chatbot |
-
 ### Manual Deployment
 
 ```bash
