@@ -91,6 +91,7 @@ coverage/
 *.secret.yaml
 *.secret.yml
 secrets.yaml
+!dapr/components/secrets.yaml
 secrets/
 kubeconfig*
 
