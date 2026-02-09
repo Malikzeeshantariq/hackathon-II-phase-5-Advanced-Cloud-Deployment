@@ -97,14 +97,26 @@ jobs:
             --set image.tag=${{ steps.tag.outputs.tag }} \
             --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}"
 
+      - name: Get frontend external IP
+        id: frontend-ip
+        run: |
+          # Get existing LB IP if available (for trusted origins)
+          IP=$(kubectl get svc todo-frontend -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+          echo "ip=$IP" >> "$GITHUB_OUTPUT"
+
       - name: Deploy frontend
         run: |
+          TRUSTED_ORIGINS=""
+          if [ -n "${{ steps.frontend-ip.outputs.ip }}" ]; then
+            TRUSTED_ORIGINS="http://${{ steps.frontend-ip.outputs.ip }}:3000"
+          fi
           helm upgrade --install todo-frontend charts/todo-frontend/ \
             -f charts/todo-frontend/values-cloud.yaml \
             --set image.repository=${{ env.REGISTRY }}/todo-frontend \
             --set image.tag=${{ steps.tag.outputs.tag }} \
             --set env.DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}"
+            --set env.BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" \
+            --set env.ADDITIONAL_TRUSTED_ORIGINS="$TRUSTED_ORIGINS"
 
       - name: Wait for rollouts
         run: |
