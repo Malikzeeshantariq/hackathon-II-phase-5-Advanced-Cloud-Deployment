@@ -1,8 +1,8 @@
-# T013: OKE Free Tier cloud overrides for recurring-service
+# AKS cloud overrides for recurring-service
 # Spec Reference: contracts/helm-values-schema.md — values-cloud.yaml
 
 image:
-  repository: ${OCI_REGION}.ocir.io/${OCIR_NAMESPACE}/recurring-service
+  repository: ${ACR_NAME}.azurecr.io/recurring-service
   tag: ${IMAGE_TAG}
   pullPolicy: Always
 

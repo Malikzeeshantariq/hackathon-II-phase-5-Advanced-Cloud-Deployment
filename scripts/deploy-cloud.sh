@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
-# T034: Manual OKE cloud deployment script (for debugging / initial setup)
+# Manual AKS cloud deployment script (for debugging / initial setup)
 # Spec Reference: specs/003-dapr-k8s-deployment/quickstart.md
 # Plan Reference: plan.md - Cloud Deployment
 #
 # Usage: ./scripts/deploy-cloud.sh
-# Prerequisites: kubectl configured for OKE, helm installed, images pushed to OCIR
-# Required env vars: OCI_REGION, OCIR_NAMESPACE, DATABASE_URL, BETTER_AUTH_SECRET, IMAGE_TAG
+# Prerequisites: kubectl configured for AKS, helm installed, images pushed to ACR
+# Required env vars: ACR_NAME, DATABASE_URL, BETTER_AUTH_SECRET, IMAGE_TAG
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-echo "=== Phase V Part C: Cloud OKE Deployment ==="
+echo "=== Phase V Part C: Cloud AKS Deployment ==="
 echo "Project root: $PROJECT_ROOT"
 echo ""
 
 # Validate required environment variables
-for var in OCI_REGION OCIR_NAMESPACE DATABASE_URL BETTER_AUTH_SECRET; do
+for var in ACR_NAME DATABASE_URL BETTER_AUTH_SECRET; do
     if [ -z "${!var:-}" ]; then
         echo "ERROR: $var environment variable not set."
         exit 1
     fi
 done
 IMAGE_TAG="${IMAGE_TAG:-latest}"
-REGISTRY="${OCI_REGION}.ocir.io/${OCIR_NAMESPACE}"
+REGISTRY="${ACR_NAME}.azurecr.io"
 
 echo "[1/6] Verifying kubectl context..."
-kubectl get nodes || { echo "ERROR: Cannot reach OKE cluster."; exit 1; }
+kubectl get nodes || { echo "ERROR: Cannot reach AKS cluster."; exit 1; }
 echo ""
 
 echo "[2/6] Applying cloud Dapr components..."
