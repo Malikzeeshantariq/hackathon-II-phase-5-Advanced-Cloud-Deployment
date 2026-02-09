@@ -39,7 +39,8 @@ class ChatClient {
   private authToken: string | null = null;
 
   constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // In production, use relative URL so requests go through Next.js rewrites proxy.
+    this.baseUrl = baseUrl || (typeof window !== 'undefined' && process.env.NODE_ENV === 'production' ? '' : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'));
   }
 
   /**

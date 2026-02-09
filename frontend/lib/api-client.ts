@@ -18,7 +18,9 @@ import type {
   ReminderCreate,
 } from "./types"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+// In production, use relative URL so requests go through Next.js rewrites proxy.
+// In development, use NEXT_PUBLIC_API_URL to hit the backend directly.
+const API_BASE_URL = process.env.NODE_ENV === "production" ? "" : (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000")
 
 /**
  * Create an Axios instance with JWT authentication.
